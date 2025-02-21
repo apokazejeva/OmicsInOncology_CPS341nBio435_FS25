@@ -1,0 +1,259 @@
+---
+title: "Week 2: Starting with R"
+author: "UZH n UU: tested by Jonas"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::html_document2: default
+  bookdown::pdf_document2: default
+bibliography: bibliography.bib
+---
+# Session Information
+```{r sessionInfo, echo=FALSE, include=TRUE}
+pander::pander(sessionInfo())
+
+```{r load libraries, include=FALSE}
+# install readr from CRAN
+# install.packages("readr")
+library(readr) # make sure your R has this library loaded, if not install it (see line above)
+```
+
+# Exercises for the R-Beginner - The fancy calculator
+
+## Exercise 2
+* from https://alexd106.github.io/intro2R/exercise_2.html
+
+### Question 2
+
+```{r myN, echo=TRUE, include=TRUE}
+myNumber <- 12.43
+
+# do some calculations
+# natural log
+log(myNumber)
+```
+
+```{r lg10, echo=TRUE, include=TRUE}
+# log10
+log10(myNumber)
+```
+
+```{r, echo=TRUE, include=TRUE}
+log2(myNumber)
+```[1] 2.520113
+```{r sqrt, echo=TRUE, include=TRUE}
+sqrt(myNumber)
+```
+
+```{r exp, echo=TRUE, include=TRUE}
+exp(myNumber)
+```
+### Question 3
+```{r, echo=TRUE, include=TRUE}
+r <- 20
+area <- pi*r*r
+print(area)
+```
+### Question 5
+```{r, echo=TRUE, include=TRUE}
+childw_vec <- c(69, 62, 57, 59, 59, 64, 56, 66, 67, 66)
+```
+
+### Question 6
+```{r, echo=TRUE, include=TRUE}
+mean_childw<- mean(childw_vec)
+print(mean_childw)
+```
+```{r, echo=TRUE, include=TRUE}
+var(childw_vec) #variation
+```
+```{r, echo=TRUE, include=TRUE}
+sd(childw_vec) #standard deviation
+```
+```{r, echo=TRUE, include=TRUE}
+range(childw_vec)
+```
+```{r, echo=TRUE, include=TRUE}
+length(childw_vec)
+```
+```{r, echo=TRUE, include=TRUE}
+first.five<-childw_vec[1:5]
+first.five
+```
+### Question 7
+```{r, echo=TRUE, include=TRUE}
+childh_vec <- c(112, 102, 83, 84, 99, 90, 77, 112, 133, 112)
+summary(childh_vec)
+```
+```{r, echo=TRUE, include=TRUE}
+some_child<-childh_vec[c(2,3,9,10)]
+some_child
+```
+```{r, echo=TRUE, include=TRUE}
+shorter_child<-childh_vec[childh_vec<=99] #any child less than/equal to 99
+shorter_child
+```
+### Question 8
+```{r, echo=TRUE, include=TRUE}
+childh_vec_m<-childh_vec/100 #convert from cm to m
+bmi<- childw_vec/(childh_vec_m^2) #bmi=weight/height^2
+print(bmi)
+```
+### Question 9
+```{r, echo=TRUE, include=TRUE}
+seq1<- 1:10 #generate sequence from 1 to 10
+seq1
+```
+
+### Question 10
+```{r, echo=TRUE, include=TRUE}
+seq2<-seq(from=10, to=1, by=-0.5) #generate sequence from 10 to 1 by 0.5 intervals
+print(seq2) #print sequence
+```
+
+## Exercise 3
+
+### Question 4
+
+setwd("C:/USers/doggy/OneDrive/Documents/BIO435) #set location
+
+### Question 5
+```{r, echo=TRUE, include=TRUE}
+whales<- read_tsv("mywhaledata.tsv") # load data using read_tsv (only in readr)
+```
+```{r, echo=TRUE, include=TRUE}
+whales<-read.table("mywhaledata.tsv",
+                   sep="\t", #tab based
+                   header=TRUE)
+View(whales)
+head(whales) #first 8 columns
+```
+
+### Question 7
+```{r, echo=TRUE, include=TRUE}
+summary(whales) #1 NA in number of whales
+```
+
+### Question 9
+```{r, echo=TRUE, include=TRUE}
+deepwhale<-whales[whales$depth>1200,]
+head(deepwhale)
+```
+```{r, echo=TRUE, include=TRUE}
+steepwhale<-whales[whales$gradient>200,]
+head(steepwhale)
+```
+```{r, echo=TRUE, include=TRUE}
+quietwhale<-whales[whales$water.noise=="low",]
+head(quietwhale)
+```
+```{r, echo=TRUE, include=TRUE}
+mayloudwhale<-whales[whales$water.noise=="high" & whales$month=="May",]
+head(mayloudwhale)
+```
+```{r, echo=TRUE, include=TRUE}
+octspecialwhale<-whales[whales$water.noise=="low" & whales$month== "October" & whales$gradient>132,]
+head(octspecialwhale)
+```
+```{r, echo=TRUE, include=TRUE}
+latlongwhales<-whales[whales$latitude> 60 & whales$latitude< 61 &
+                      whales$longitude> -6 & whales$longitude< -4,]
+head(latlongwhales)
+```
+```{r, echo=TRUE, include=TRUE}
+nomediumwhale<-whales[whales$water.noise != "medium",]
+head(nomediumwhale)
+```
+
+###Question 10
+```{r, echo=TRUE, include=TRUE}
+octspecialwhale<-whales[whales$water.noise=="low" & whales$month== "October" & whales$gradient>median(whales$gradient),]
+head(octspecialwhale)
+```
+
+###Question 11
+```{r, echo=TRUE, include=TRUE}
+manydeepwhales<-whales[whales$depth>1500 &
+                       whales$number.whales>mean(whales$number.whales),] #results all NAs
+View(manydeepwhales)
+manydeepwhales2<-whales[whales$depth>1500 &
+                        whales$number.whales>mean(whales$number.whales, na.rm=TRUE),] #use na.rm to ignore NAs
+View(manydeepwhales2)
+```
+
+##Exercise 4
+###Question 4
+```{r, echo=TRUE, include=TRUE}
+squid<-read.table("squid1.txt",
+                  header= TRUE)
+summary(squid)
+View(squid)
+```
+```{r, echo=TRUE, include=TRUE}
+nrow(squid) #number of rows (observations)
+```
+```{r, echo=TRUE, include=TRUE}
+ncol(squid) #number of columns (variables)
+```
+```{r, echo=TRUE, include=TRUE}
+squid$year_factor<-factor(squid$year) #change year from integer into factor
+squid$month_factor<-factor(squid$month) #month to factor
+squid$maturity_stage<-factor(squid$maturity.stage) #maturity stage to factor
+str(squid)
+```
+###Question 5
+```{r, echo=TRUE, include=TRUE}
+table(squid$year_factor, squid$month_factor) #see how many observations per month and year combination 
+```
+```{r, echo=TRUE, include=TRUE}
+xtabs(~year+month, data= squid) #see observations per month and year combo and specifies labels
+#1989 missing data for months 1-11, 1990 missing 2 and 6, 1991 missing 8-12
+#1990 has most observations
+```
+```{r, echo=TRUE, include=TRUE}
+squid.table<-xtabs(~year+maturity.stage+month, data= squid) #create contingency table
+squid.flat.table<-ftable(squid.table) #flatten contingency table
+squid.flat.table #view table
+```
+###Question 9
+```{r, echo=TRUE, include=TRUE}
+squid.DML.w<-ggplot(squid)+
+  geom_point(aes(x=DML, y=weight))+
+  theme_classic()+
+  labs(x= "DML",
+       y= "Weight")
+#linear positive relationship
+```
+```{r, echo=TRUE, include=TRUE}
+squid$weight.log<-log(squid$weight) #log transformation
+squid$weight.sqrt<-sqrt(squid$weight) #square root transformation
+head(squid)
+```
+```{r, echo=TRUE, include=TRUE}
+#scatterplot of DML vs log weight
+squid.DML.logw<-ggplot(squid)+
+  geom_point(aes(x=DML, y=weight.log))+
+  theme_classic()+
+  labs(x= "DML",
+       y= "Log Weight")
+```
+```{r, echo=TRUE, include=TRUE}
+#scatterplot of DML vs sqrt weight
+squid.DML.sqrtw<-ggplot(squid)+
+    geom_point(aes(x=DML, y=weight.sqrt))+
+    theme_classic()+
+    labs(x="DML",
+         y="Square root Weight")
+#best linearises relationship
+```
+###Question 10
+```{r, echo=TRUE, include=TRUE}
+
+```
+###Question 12
+```{r, echo=TRUE, include=TRUE}
+
+```
+# Session Information
+```{r sessionInfo, echo=FALSE, include=TRUE}
+pander::pander(sessionInfo())
+```
